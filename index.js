@@ -11,6 +11,12 @@ import clientRoutes from "./router/client.js";
 import generalRoutes from "./router/general.js";
 import managementRoutes from "./router/management.js";
 import salesRoutes from "./router/sales.js";
+
+// data input
+import User from "./models/User.js";
+import Product from "./models/Product.js";
+import ProductStat from "./models/ProductStat.js";
+import { dataUser, dataProduct, dataProductStat } from "./data/index.js";
 // configuration
 dotenv.config();
 const app = express();
@@ -32,9 +38,17 @@ app.use("/sales", salesRoutes);
 // mongoose setup
 
 const PORT = process.env.PORT || 9000;
-mongoose.connect(process.env.MONGODB_DATABASE_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
-  app.listen(PORT, () => console.log(`server port ${PORT}`));
-}).catch((error) => console.log(`${error} did not connect`));
+mongoose
+  .connect(process.env.MONGODB_DATABASE_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    app.listen(PORT, () => console.log(`server port ${PORT}`));
+
+    // OnLY DATA AD single time
+    //  Product.insertMany(dataProduct);
+    // ProductStat.insertMany(dataProductStat);
+    // User.insertMany(dataUser);
+  })
+  .catch((error) => console.log(`${error} did not connect`));
